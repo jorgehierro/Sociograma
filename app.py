@@ -26,6 +26,13 @@ else:
         st.write("\n Generados todos los gráficos.")
 
         st.write("Ahora, generamos el informe...")
-        generar_informe()
+        informe = generar_informe()
 
         st.success("✅ Sociograma generado con éxito!")
+
+        st.download_button(
+            label = "📄 Descargar informe PDF",
+            data = informe,
+            file_name = "Informe_Sociograma.pdf",
+            mime = "application/pdf"
+        )

@@ -11,6 +11,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY
 from datetime import datetime
+import io
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -512,8 +513,8 @@ def generar_informe():
     ]
 
     # Crear documento
-    nombre_pdf = "Informe_Sociograma.pdf"
-    pdf = SimpleDocTemplate(nombre_pdf, pagesize=A4)
+    buffer = io.BytesIO()
+    pdf = SimpleDocTemplate(buffer, pagesize=A4)
     estilos = getSampleStyleSheet()
 
     # Estilo de texto justificado
@@ -711,11 +712,12 @@ def generar_informe():
     elementos.append(Spacer(1, 8))
     elementos.append(Image(imagenes[5], width=420, height=350))
 
-
-    # Generar PDF
     pdf.build(elementos)
 
-    print(f"✅ Informe generado correctamente: {nombre_pdf}")
+    buffer.seek(0)  # Volver al inicio del buffer
+    print("✅ Informe generado correctamente")
+    
+    return buffer.getvalue()
 
 
 # if __name__ == "__main__":
