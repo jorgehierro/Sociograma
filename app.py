@@ -25,8 +25,8 @@ if uploaded_file is not None:
             st.error("❌ El archivo no parece tener un formato CSV válido. Verifica el contenido.")
             st.stop()
 else:
-    df = None
-if df:
+    df = pd.DataFrame()
+if df.shape[0] != 0:
     modo = st.radio(
         "¿Qué deseas generar?",
         ("Solo fotos", "Informe completo")
