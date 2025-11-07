@@ -48,8 +48,8 @@ def generar_graficos(df):
     ####################################################################################################################
 
     # Quitamos la columna 'sumatorio' del gráfico (para que no afecte a la escala de colores)
-    df_plot = df.drop(columns='sumatorio')
-    df_numerico_plot = df_numerico.drop(columns='sumatorio')
+    df_plot = df
+    df_numerico_plot = df_numerico
 
     n = len(df_numerico_plot)
     plt.figure(figsize=(n * 0.6, n * 0.6))
