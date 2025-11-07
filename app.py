@@ -13,10 +13,19 @@ uploaded_file = st.file_uploader(
     type=["csv"]
 )
 
-if not uploaded_file:
-    st.warning("Por favor, sube un archivo válido para continuar.")
-    st.stop()
-
+if uploaded_file is not None:
+    # Si el archivo subido no tiene extensión .csv o no puede leerse como CSV
+    if not uploaded_file.name.lower().endswith(".csv"):
+        st.error("❌ El archivo subido no es un CSV. Por favor, sube un archivo con extensión .csv.")
+        st.stop()
+    else:
+        try:
+            df = pd.read_csv(uploaded_file, index_col=0)
+        except Exception:
+            st.error("❌ El archivo no parece tener un formato CSV válido. Verifica el contenido.")
+            st.stop()
+else:
+    df = None
 modo = st.radio(
     "¿Qué deseas generar?",
     ("Solo fotos", "Informe completo")
