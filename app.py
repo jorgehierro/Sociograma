@@ -6,7 +6,7 @@ import streamlit as st
 st.set_page_config(page_title="sociogramIA", page_icon="📊", layout="centered")
 
 st.title("📊 sociogramIA")
-st.write("Generador de sociogramas a partir de matrices")
+st.write("Generador automático de sociogramas a partir de matrices")
 
 uploaded_file = st.file_uploader(
     "📂 Arrastra o sube el archivo .csv (.xlsx estará disponible próximamente)",
