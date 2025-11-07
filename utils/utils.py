@@ -31,26 +31,35 @@ def generar_graficos(df):
     sumatorio_filas = df_numerico.sum(axis=1)
     orden = sumatorio_filas.sort_values(ascending=False).index
 
+    # Reordenamos filas y columnas según el sumatorio
     df = df.loc[orden, orden]
     df_numerico = df_numerico.loc[orden, orden]
+
+    # Añadimos la columna 'sumatorio' para referencia
     df['sumatorio'] = sumatorio_filas.loc[orden]
     df_numerico['sumatorio'] = sumatorio_filas.loc[orden]
-    #ordenamos por sumatorio
-    df_numerico = df_numerico.sort_values(by = 'sumatorio',ascending=False)
 
-####################################################################################################################
-#------------------------------------Dibujamos el heatmap----------------------------------------------------------#
-####################################################################################################################
+    # Ordenamos por 'sumatorio' (en ambos DataFrames, con el mismo orden)
+    df = df.sort_values(by='sumatorio', ascending=False)
+    df_numerico = df_numerico.loc[df.index, df.columns]
 
-    n = len(df_numerico)
+    ####################################################################################################################
+    #------------------------------------Dibujamos el heatmap----------------------------------------------------------#
+    ####################################################################################################################
+
+    # Quitamos la columna 'sumatorio' del gráfico (para que no afecte a la escala de colores)
+    df_plot = df.drop(columns='sumatorio')
+    df_numerico_plot = df_numerico.drop(columns='sumatorio')
+
+    n = len(df_numerico_plot)
     plt.figure(figsize=(n * 0.6, n * 0.6))
 
     # Paleta y estilo
     sns.set(font_scale=1.1, style='white')
 
     ax = sns.heatmap(
-        df_numerico,
-        annot=df,        #Metemos los valores originales, no los numéricos
+        df_numerico_plot,
+        annot=df_plot,        # Metemos los valores originales, no los numéricos
         cmap='RdYlGn',
         vmin=-3, vmax=3, center=0,
         fmt='',
@@ -59,7 +68,7 @@ def generar_graficos(df):
         square=True,
         cbar_kws={
             'label': 'Puntuación ajustada (Rojo → Verde)',
-            'shrink': 0.85,           # más corto
+            'shrink': 0.85,
             'pad': 0.02
         },
         annot_kws={
@@ -79,8 +88,8 @@ def generar_graficos(df):
 
     plt.savefig('sociograma_heatmap_corregido.png')
     print('Matriz generada')
-    #plt.show()
     plt.close()
+
 
 ####################################################################################################################
 #------------------------------------Dibujamos el gráfico de barras------------------------------------------------#
